@@ -1,0 +1,24 @@
+﻿@using Sportverein.Shared.Models
+@using Sportverein.UI.ViewModels
+@model  MembershipViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = $"Add User to {@ViewBag.Header}";
+}
+
+
+<form method="post" action="/courses/@Model.CourseId/savenewmember">
+    <div class="form-group">
+        <label>Course</label>
+        <select asp-for="@Model.UserId" class="form-control">
+        @{
+            foreach(var user in @Model.Users)
+            {
+                <option value="@user.ID">@user.FirstName @user.LastName</option>
+            }
+        }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="/courses/@Model.CourseId/members" class="btn btn-primary">Back</a>
+</form>

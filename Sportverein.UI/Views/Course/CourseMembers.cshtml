@@ -1,0 +1,51 @@
+﻿@using Sportverein.Shared.Models;
+@model  IEnumerable<User>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Members of " + ViewBag.Header;
+}
+
+
+<h1>Members of @ViewBag.Header</h1>
+
+@{
+  var admin = User.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+  bool isAdmin = admin?.Value == "Admin";
+
+  if(isAdmin)
+  {
+    <a href="/users/addtocourse/@ViewBag.CourseId" class="btn btn-primary mb-3">Add</a>
+  }
+}
+
+
+@if(Model is not null)
+{
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">E-Mail</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var user in @Model.ToList())
+      {
+          <tr>
+          <th scope="row">@user.ID</th>
+          <td>@user.FirstName</td>
+          <td>@user.LastName</td>
+          <td>@user.Email</td>
+          @if(isAdmin){
+            <td>
+              <a href="/courses/@ViewBag.CourseId/members/@user.ID/delete" class="btn btn-primary">Remove</a>
+            </td>
+          }
+          </tr>
+      }
+    </tbody>
+  </table>
+}

@@ -1,0 +1,37 @@
+﻿@using Sportverein.Shared.Models;
+@model  IEnumerable<Course>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "User Courses";
+}
+
+
+
+@if(Model is null){
+  <h1>This User is not part of any courses.</h1>
+  <a href="/users" class="btn btn-primary mb-3">Back</a>
+} 
+else{
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var course in @Model.ToList())
+    {
+    <tr>
+      <th scope="row">@course.ID</th>
+      <td>@course.Name</td>
+      <td>
+        <!--<a href="/courses/@{}course.ID/members/@{}ViewBag.User.ID/delete" class="btn btn-primary">Leave</a>-->
+        <a href="/events/course/@course.ID/@course.Name" class="btn btn-primary">Events</a>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
+}

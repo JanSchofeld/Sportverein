@@ -1,0 +1,58 @@
+﻿@using Sportverein.UI.ViewModels;
+@model  CourseEventViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = $"Event List";
+}
+
+
+
+@{
+  var admin = User.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+  bool isAdmin = admin?.Value == "Admin";
+
+  if (isAdmin)
+  {
+    <a href="/events/new" class="btn btn-primary mb-3">Add</a>
+  }
+}
+
+
+
+@if(Model is null)
+{
+  <h1>There currently are no events.</h1>
+}
+else
+{
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Course</th>
+        <th scope="col">Date</th>
+        <th scope="col">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      @if (@Model.CourseEvents is not null)
+      {
+        @foreach (var courseEvent in @Model.CourseEvents.ToList())
+        {
+            <tr>
+            <th scope="row">@courseEvent.ID</th>
+            <td>@Model.Courses.Where(c => c.ID == courseEvent.CourseId).FirstOrDefault().Name</td>
+            <td>@courseEvent.Date.ToString("dd.MM.yyyy HH:mm")</td>
+            <td>@courseEvent.Description</td>
+            @if(isAdmin){
+              <td>
+                <a href="/events/@courseEvent.ID/edit" class="btn btn-primary">Edit</a>
+                <a href="/events/@courseEvent.ID/delete" class="btn btn-primary">Delete</a>
+              </td>
+            }
+            </tr>
+        }
+      }
+    </tbody>
+  </table>
+}

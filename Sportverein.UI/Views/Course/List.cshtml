@@ -1,0 +1,46 @@
+﻿@using Sportverein.Shared.Models;
+@model  IEnumerable<Course>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Course List";
+}
+
+@{
+  var admin = User.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+  bool isAdmin = admin?.Value == "Admin";
+
+  if(isAdmin)
+  {
+    <a href="/courses/new" class="btn btn-primary mb-3">Add</a>
+  }
+}
+
+@if(Model is null){
+  <h1>There are no Courses</h1>
+} 
+else {
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var course in @Model.ToList())
+      {
+      <tr>
+        <th scope="row">@course.ID</th>
+        <td>@course.Name</td>
+        <td>
+          <a href="/events/course/@course.ID" class="btn btn-primary">Events</a>
+          @if(isAdmin){
+            <a href="courses/@course.ID/members" class="btn btn-primary">Members</a>
+          }
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+}

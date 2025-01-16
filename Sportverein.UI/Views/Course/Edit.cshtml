@@ -1,0 +1,20 @@
+﻿@using Sportverein.Shared.Models;
+@model Course
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = $"Editing {Model.Name}";
+}
+
+@if(Model is null){
+    <h1>Could not find the Course you are trying to edit</h1>
+    <a href="/courses" class="btn btn-primary mb-3">Back</a>
+} else{
+<form method="post" action="/courses/update">
+    <div class="mb-2">
+        <label asp-for="Name" class="form-label"></label>
+        <input class="form-control" asp-for="Name">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+}

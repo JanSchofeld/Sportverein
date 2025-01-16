@@ -1,0 +1,40 @@
+﻿@using Sportverein.Shared.Models
+@using Sportverein.UI.ViewModels
+
+@model  CourseEventViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "User Events";
+}
+
+
+@if(Model is null)
+{
+  <h1>Could not find any events for this user</h1>
+  <a href="/users" class="btn btn-primary mb-3">Back</a>
+}
+else
+{
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Course</th>
+        <th scope="col">Date</th>
+        <th scope="col">Description</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      @foreach (var courseEvent in @Model.CourseEvents.ToList())
+      {
+          <tr>
+            <th scope="row">@courseEvent.ID</th>
+            <td>@Model.Courses.Where(c => c.ID == courseEvent.CourseId).FirstOrDefault().Name</td>
+            <td>@courseEvent.Date</td>
+            <td>@courseEvent.Description</td>
+          </tr>
+      }
+    </tbody>
+  </table>
+}

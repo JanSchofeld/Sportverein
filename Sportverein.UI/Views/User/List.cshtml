@@ -1,0 +1,54 @@
+﻿@using Sportverein.Shared.Models;
+@model  IEnumerable<User>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "User List";
+}
+
+@{
+  var admin = User.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+  bool isAdmin = admin?.Value == "Admin";
+
+  if(isAdmin)
+  {
+    <a href="/users/new" class="btn btn-primary mb-3">Add</a>
+  }
+}
+
+@if(Model is null)
+{
+  <h1>There are no users.</h1>
+}
+else{
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">E-Mail</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var user in @Model.ToList())
+      {
+      <tr>
+        <th scope="row">@user.ID</th>
+        <td>@user.FirstName</td>
+        <td>@user.LastName</td>
+        <td>@user.Email</td>
+        <td>
+          <a href="/courses/user/@user.ID" class="btn btn-primary">Courses</a>
+          <a href="/events/user/@user.ID" class="btn btn-primary">Events</a>
+
+          @if(isAdmin){
+            <a href="/users/edit/@user.ID" class="btn btn-primary">Edit</a>
+            <a href="/users/delete/@user.ID" class="btn btn-primary">Delete</a>
+          }
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+}

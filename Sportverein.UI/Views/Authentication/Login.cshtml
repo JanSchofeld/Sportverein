@@ -1,0 +1,25 @@
+﻿@model Sportverein.Shared.ViewModels.LoginViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "ToDo - Login";
+}
+
+<form method="post" action="/Authentication/Authenticate">
+    <div class="mb-2">
+        <label asp-for="Email" class="form-label"></label>
+        <input class="form-control" asp-for="Email">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-2">
+        <label asp-for="Password" class="form-label"></label>
+        <input class="form-control" type="password" asp-for="Password">
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    @if(ViewBag.Error is not null)
+    {
+        <div class="mb-2">
+            <span class="text-danger">@ViewBag.Error</span>
+        </div>
+    }
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
